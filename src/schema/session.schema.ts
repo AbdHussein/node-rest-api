@@ -1,12 +1,15 @@
-import { object, string, ref } from 'yup';
+import {object, string} from 'zod';
+
 
 export const createUserSessionSchema = object({
     body: object({
-        email: string()
-        .email('Must be a vaild email')
-        .required('Email is required'),
-        password: string().required('password is required')
-        .min(8, 'Password too short - should be 8 character minimum.')
-        .matches(/^[a-zA-Z0-9_.-]*$/)
+        email: string({
+            required_error: 'Email is required'
+        })
+        .email('Must be a vaild email'),
+
+        password: string({
+            required_error: 'password is required'
+        }).min(8, 'Password too short - should be 8 character minimum.')
     })
 })

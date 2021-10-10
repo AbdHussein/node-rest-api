@@ -20,14 +20,14 @@ const userSchema = new mongoose.Schema(
     { timestamps: true }
 )
 
-userSchema.pre('save', async function(next: Function) {
+userSchema.pre('save', async function(next: Function){
     let user = this as UserDocument;
     
     // only hash the password if it has been modified ( or it's new )
     if(!user.isModified("password")) return next();
     
     // add random salt
-    const salt = await bcrypt.genSalt(config.get('saltWorkFactor'));
+    const salt = await bcrypt.genSalt(config.get<number>('saltWorkFactor'));
     const hash = await bcrypt.hashSync(user.password, salt);
 
     // Replace the password with the hash
@@ -36,7 +36,7 @@ userSchema.pre('save', async function(next: Function) {
     return next();
 });
 
-userSchema.methods.comparePassword = async function(candidatePassword: string) {
+userSchema.methods.comparePassword = async function(candidatePassword: string): Promise<boolean> {
     const user = this as UserDocument;
     return bcrypt.compare(candidatePassword, user.password).catch((e) => false);
 }

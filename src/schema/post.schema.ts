@@ -1,17 +1,20 @@
-import { object, string, ref } from 'yup';
-
+import {object, string} from 'zod';
 const payload = {
     body: object({
-        title: string().required("Title is required"),
-        body: string()
-            .required("Body is required")
-            .min(120, "Body is too short - should be 120 chars minimum."),
+        title: string({
+            required_error: 'Title is required'
+        }),
+        body: string({
+            required_error: 'Body is required'
+        }).min(120, "Body is too short - should be 120 chars minimum."),
     }),
 };
 
 const params = {
     params: object({
-        postId: string().required("postId is required"),
+        postId: string({
+            required_error: 'post ID is required'
+        }),
     }),
 };
 

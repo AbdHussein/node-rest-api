@@ -1,6 +1,6 @@
 import {Express, Request, Response} from 'express';
 import {createUserHandler} from './controller/user.controller';
-import {createUserSessionHandler, invalidateUserSessionHandler, getUserSessionsHandler} from './controller/session.controller';
+import {createUserSessionHandler, invalidateUserSessionHandler, getUserSessionsHandler, deleteAllSessionsHandler} from './controller/session.controller';
 
 import {createUserSchema} from './schema/user.schema';
 import {createUserSessionSchema} from './schema/session.schema';
@@ -22,7 +22,7 @@ export default (app: Express) => {
 
     // login
     // POST /api/sessions
-    app.post('/api/sessions', validate(createUserSessionSchema),  createUserSessionHandler)
+    app.post('/api/sessions', validate(createUserSessionSchema),  createUserSessionHandler);
 
     // get the user's sessions
     // GET /api/sessions
@@ -30,7 +30,11 @@ export default (app: Express) => {
 
     //logout
     //DELETE /api/sessions
-    app.delete('/api/sessions', requiresUser, invalidateUserSessionHandler)
+    app.delete('/api/sessions', requiresUser, invalidateUserSessionHandler);
+
+    // logout from all sessions
+    // PUT /api/sessions
+    app.put('/api/sessions', requiresUser, deleteAllSessionsHandler);
 
     // ------------------------------
     

@@ -27,7 +27,7 @@ export const createAccessToken = async({
 }) => {
     const accessToken = sign(
         {...user, session: session._id},
-        {expiresIn: config.get('accessTokenTtl')}
+        {expiresIn: config.get<string>('accessTokenTtl')}
         );
     return accessToken;
 }
@@ -62,4 +62,11 @@ export const updateSession = async(
 
 export const findSessions = async( query: FilterQuery<SessionDocument>) => {
     return Session.find(query).lean();
+}
+
+export const invalidateAllSessions = async(
+    query: FilterQuery<SessionDocument>,
+    update: UpdateQuery<SessionDocument>
+) => {
+    return Session.updateMany(query, update);
 }

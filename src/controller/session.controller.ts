@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import config from 'config';
 import { validatePassword } from '../services/user.service';
-import { createSession, createAccessToken, updateSession, findSessions } from '../services/session.service';
+import { createSession, createAccessToken, updateSession, findSessions, invalidateAllSessions} from '../services/session.service';
 import log from '../log';
 import {sign} from '../utils/jwt.utils';
 import { get } from 'lodash';
@@ -51,4 +51,12 @@ export const getUserSessionsHandler = async(req: Request, res: Response) => {
     const sessions = await findSessions({user: user_id, valid: true});
     
     return res.send(sessions);
+}
+
+export const deleteAllSessionsHandler = async(req: Request, res: Response) => {
+    const user_id = get(req, 'user._id');
+
+    await invalidateAllSessions({user: user_id}, {valid: false});
+
+    return res.sendStatus(200);
 }
