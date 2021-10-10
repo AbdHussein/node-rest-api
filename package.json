@@ -18,7 +18,8 @@
     "nanoid": "^3.1.28",
     "pino": "^6.13.3",
     "pino-pretty": "^7.0.1",
-    "yup": "^0.32.9"
+    "yup": "^0.32.9",
+    "zod": "^3.9.8"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
