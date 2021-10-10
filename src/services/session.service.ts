@@ -66,7 +66,7 @@ export const findSessions = async( query: FilterQuery<SessionDocument>) => {
 
 export const invalidateAllSessions = async(
     query: FilterQuery<SessionDocument>,
-    update: UpdateQuery<SessionDocument>
+    update: UpdateQuery<SessionDocument>,
 ) => {
     return Session.updateMany(query, update);
 }

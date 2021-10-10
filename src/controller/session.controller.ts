@@ -54,9 +54,14 @@ export const getUserSessionsHandler = async(req: Request, res: Response) => {
 }
 
 export const deleteAllSessionsHandler = async(req: Request, res: Response) => {
-    const user_id = get(req, 'user._id');
+    try{
+        const user_id = get(req, 'user._id');
+        const sessionId = get(req, 'user.session');
 
-    await invalidateAllSessions({user: user_id}, {valid: false});
+        await invalidateAllSessions({user: user_id, _id : {$ne: sessionId} }, {valid: false});
 
-    return res.sendStatus(200);
+        return res.sendStatus(200);
+    }catch(error: any){
+        return res.status(500).send(error.toString());
+    }
 }
